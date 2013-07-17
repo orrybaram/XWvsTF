@@ -11,12 +11,8 @@ var deathStar;
 
 var clock = new THREE.Clock();
 
-var cockpit = new Cockpit('img/XW_cockpit.png');
-var cockpitState = 'normal';
+var cockpit, cockpitState;
 
-cockpit.addText('hud-speed', 'SPD:');
-cockpit.addText('hud-thrust', 'PWR:');
-cockpit.addText('hud-force', 'F:');
 
 document.body.addEventListener('mousemove', function( evt ){
     var vert = ( SCREEN_HEIGHT / 2 - evt.clientY ) / ( SCREEN_HEIGHT / 2 ) * -0.8;
@@ -24,8 +20,15 @@ document.body.addEventListener('mousemove', function( evt ){
     cockpit.move(hor, vert);
 });
 
-init();
-// animate();
+// LOAD UP THE DEATH STAR AND THEN INIT
+colladaLoader.load('models/death-star.dae', function (result) {
+	deathStar = result.scene;
+	init();
+	animate();
+});
+
+
+
 
 function init() {
 	var $screen = $('#screen');
@@ -81,17 +84,16 @@ function init() {
 
 	// Death Star
 	// =============================================
-	colladaLoader.load('models/death-star.dae', function (result) {
-		deathStar = result.scene;
+
 		deathStar.scale.set(1,1,1);
 		deathStar.position.x = 1000;
 		scene.add(deathStar);
 		setMaterial(deathStar, new THREE.MeshLambertMaterial({ color: 0xCCCCCC }));
 
 		// Once the death star is loaded in, start animations
-		animate();
+		
 			
-	});
+	
 
 	// Stars
 	// =============================================
@@ -145,6 +147,13 @@ function init() {
 		scene.add( stars );
 
 	}
+	
+	cockpit = new Cockpit('img/XW_cockpit.png');
+	cockpitState = 'normal';
+
+	cockpit.addText('hud-speed', 'SPD:');
+	cockpit.addText('hud-thrust', 'PWR:');
+	cockpit.addText('hud-force', 'F:');
 
 	// Renderer
 	// =============================================
@@ -169,9 +178,7 @@ function onWindowResize( event ) {
 	camera.aspect = SCREEN_WIDTH / SCREEN_HEIGHT;
 	camera.updateProjectionMatrix();
 
-	// composer.reset();
-
-    //controls.onContainerDimensionsChanged();
+    controls.onContainerDimensionsChanged();
 
 };
 
