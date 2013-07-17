@@ -5,10 +5,9 @@ var SCREEN_WIDTH  = window.innerWidth;
 
 var container, stats;
 var camera, controls, scene, sceneCube, renderer;
-var geometry, meshPlanet, meshClouds, meshMoon;
 var dirLight, pointLight, ambientLight;
 
-var d, dPlanet, dMoon, dMoonVec = new THREE.Vector3();
+var deathStar;
 
 var clock = new THREE.Clock();
 
@@ -26,12 +25,10 @@ document.body.addEventListener('mousemove', function( evt ){
 });
 
 init();
-animate();
+// animate();
 
 function init() {
-
-	container = document.createElement( 'div' );
-	document.body.appendChild( container );
+	var $screen = $('#screen');
 
 	scene = new THREE.Scene();
 	// scene.fog = new THREE.FogExp2( 0x000000, 0.00000025 );
@@ -39,7 +36,15 @@ function init() {
 	// Camera
 	// =============================================
 	
-	camera = new THREE.PerspectiveCamera( 25, SCREEN_WIDTH / SCREEN_HEIGHT, 50, 1000 );
+	camera = new THREE.PerspectiveCamera( 25, SCREEN_WIDTH / SCREEN_HEIGHT, 50, 10000 );
+
+	camera.position.set(15000, 5, -135);
+
+	// TODO: learn this
+	camera.quaternion.x = 0.07;
+	camera.quaternion.y = 0.78;
+	camera.quaternion.z = 0.0002;
+	camera.quaternion.w = 0.6;
 
 	scene.add( camera );
 
@@ -48,100 +53,106 @@ function init() {
 	controls = new THREE.SpaceshipControls( camera );
 	
 	controls.movementSpeed = 0;
-	controls.domElement = container;
+	controls.domElement = $screen;
 
 	controls.rollSpeed = Math.PI / 24;
-    controls.maxSpeed = 700;
-    controls.inertia = 150;
+ 	controls.maxSpeed = 700;
+ 	controls.inertia = 150;
 
  	// // Lights
 	// // =============================================
 
-	// dirLight = new THREE.DirectionalLight( 0xffffff );
-	// dirLight.position.set( -1, 0, 1 ).normalize();
-	// scene.add( dirLight );
+	// create a point light
+	light = new THREE.DirectionalLight( 0xFFFFFF );
+	light.position.set( 0, 500, -1700 );
+	light.target.position.set(100,-10,-100)
 
-	// ambientLight = new THREE.AmbientLight( 0x000000 );
-	// scene.add( ambientLight );
+	light.intensity = 1;
+	//scene.add( new THREE.DirectionalLightHelper(light, 2.5) );
+	light.castShadow = true;
+	scene.add(light)
 
-	
+	light2 = light = new THREE.DirectionalLight( 0xFFFFFF );
+	light2.position.set( 150, 30, 600 );
+	light2.target.position.set(0,0,0)
+	light2.intensity = 1;
+	scene.add(light2)
+
 
 	// Death Star
 	// =============================================
+	colladaLoader.load('models/death-star.dae', function (result) {
+		deathStar = result.scene;
+		deathStar.scale.set(1,1,1);
+		deathStar.position.x = 1000;
+		scene.add(deathStar);
+		setMaterial(deathStar, new THREE.MeshLambertMaterial({ color: 0xCCCCCC }));
 
-	// var deathStar;
-	// colladaLoader.load('models/death-star.dae', function (result) {
-	// 	deathStar = result.scene;
-	// 	scene.add(deathStar);
-	// 	setMaterial(deathStar, new THREE.MeshLambertMaterial({ color: 0xCCCCCC }));
-
-	// 	// Once the death star is loaded in, start animations
-		
+		// Once the death star is loaded in, start animations
+		animate();
 			
-	// });
+	});
 
 	// Stars
 	// =============================================
 
-	// var i, r = radius, starsGeometry = [ new THREE.Geometry(), new THREE.Geometry() ];
+	// WHY DOESNT THIS WORK???
 
-	// for ( i = 0; i < 250; i ++ ) {
+	var i, r = 3000, starsGeometry = [ new THREE.Geometry(), new THREE.Geometry() ];
 
-	// 	vector1 = new THREE.Vector3( Math.random() * 2 - 1, Math.random() * 2 - 1, Math.random() * 2 - 1 );
-	// 	vector1.multiplyScalar( r );
+	for ( i = 0; i < 250; i ++ ) {
 
-	// 	starsGeometry[ 0 ].vertices.push( new THREE.Vector3( vector1 ) );
+		vector1 = new THREE.Vector3( Math.random() * 2 - 1, Math.random() * 2 - 1, Math.random() * 2 - 1 );
+		vector1.multiplyScalar( r );
 
-	// }
+		starsGeometry[ 0 ].vertices.push( new THREE.Vector3( vector1 ) );
 
-	// for ( i = 0; i < 1500; i ++ ) {
+	}
 
-	// 	vector1 = new THREE.Vector3( Math.random() * 2 - 1, Math.random() * 2 - 1, Math.random() * 2 - 1 );
-	// 	vector1.multiplyScalar( r );
+	for ( i = 0; i < 1500; i ++ ) {
 
-	// 	starsGeometry[ 1 ].vertices.push( new THREE.Vector3( vector1 ) );
+		vector1 = new THREE.Vector3( Math.random() * 2 - 1, Math.random() * 2 - 1, Math.random() * 2 - 1 );
+		vector1.multiplyScalar( r );
 
-	// }
+		starsGeometry[ 1 ].vertices.push( new THREE.Vector3( vector1 ) );
 
-	// var stars;
-	// var starsMaterials = [
-	// 	new THREE.ParticleBasicMaterial( { color: 0x555555, size: 2, sizeAttenuation: false } ),
-	// 	new THREE.ParticleBasicMaterial( { color: 0x555555, size: 1, sizeAttenuation: false } ),
-	// 	new THREE.ParticleBasicMaterial( { color: 0x333333, size: 2, sizeAttenuation: false } ),
-	// 	new THREE.ParticleBasicMaterial( { color: 0x3a3a3a, size: 1, sizeAttenuation: false } ),
-	// 	new THREE.ParticleBasicMaterial( { color: 0x1a1a1a, size: 2, sizeAttenuation: false } ),
-	// 	new THREE.ParticleBasicMaterial( { color: 0x1a1a1a, size: 1, sizeAttenuation: false } )
-	// ];
+	}
 
-	// for ( i = 10; i < 30; i ++ ) {
+	var stars;
+	var starsMaterials = [
+		new THREE.ParticleBasicMaterial( { color: 0x555555, size: 2, sizeAttenuation: false } ),
+		new THREE.ParticleBasicMaterial( { color: 0x555555, size: 1, sizeAttenuation: false } ),
+		new THREE.ParticleBasicMaterial( { color: 0x333333, size: 2, sizeAttenuation: false } ),
+		new THREE.ParticleBasicMaterial( { color: 0x3a3a3a, size: 1, sizeAttenuation: false } ),
+		new THREE.ParticleBasicMaterial( { color: 0x1a1a1a, size: 2, sizeAttenuation: false } ),
+		new THREE.ParticleBasicMaterial( { color: 0x1a1a1a, size: 1, sizeAttenuation: false } )
+	];
 
-	// 	stars = new THREE.ParticleSystem( starsGeometry[ i % 2 ], starsMaterials[ i % 6 ] );
+	for ( i = 10; i < 30; i ++ ) {
 
-	// 	stars.rotation.x = Math.random() * 6;
-	// 	stars.rotation.y = Math.random() * 6;
-	// 	stars.rotation.z = Math.random() * 6;
+		stars = new THREE.ParticleSystem( starsGeometry[ i % 2 ], starsMaterials[ i % 6 ] );
 
-	// 	s = i * 10;
-	// 	stars.scale.set( s, s, s );
+		stars.rotation.x = Math.random() * 6;
+		stars.rotation.y = Math.random() * 6;
+		stars.rotation.z = Math.random() * 6;
 
-	// 	stars.matrixAutoUpdate = false;
-	// 	stars.updateMatrix();
+		s = i * 10;
+		stars.scale.set( s, s, s );
 
-	// 	scene.add( stars );
+		stars.matrixAutoUpdate = false;
+		stars.updateMatrix();
 
-	// }
+		scene.add( stars );
+
+	}
 
 	// Renderer
 	// =============================================
 
-	renderer = new THREE.WebGLRenderer();
-	renderer.setClearColor("0x000000");
+	renderer = new THREE.WebGLRenderer()
 	renderer.setSize( SCREEN_WIDTH, SCREEN_HEIGHT );
-	renderer.sortObjects = false;
 
-	renderer.autoClear = false;
-
-	container.appendChild( renderer.domElement );
+	$screen.append( renderer.domElement );
 
 	window.addEventListener( 'resize', onWindowResize, false );
 
@@ -169,9 +180,9 @@ function onWindowResize( event ) {
 	camera.aspect = SCREEN_WIDTH / SCREEN_HEIGHT;
 	camera.updateProjectionMatrix();
 
-	composer.reset();
+	// composer.reset();
 
-    controls.onContainerDimensionsChanged();
+    //controls.onContainerDimensionsChanged();
 
 };
 
@@ -183,7 +194,6 @@ function animate() {
 function render() {
 
     var vel, force, forceLimitReached, atmosphereEntered, state;
-
 
 	var delta = clock.getDelta();
 
@@ -209,13 +219,10 @@ function render() {
 
 	controls.update( delta );
 
-	renderer.clear();
-	composer.render( delta );
-
-    cockpit.updateText('hud-speed', 'SPD: ' + Math.floor(controls.movementSpeed * controls.maxSpeed));
+	cockpit.updateText('hud-speed', 'SPD: ' + Math.floor(controls.movementSpeed * controls.maxSpeed));
     cockpit.updateText('hud-thrust', 'PWR: ' + Math.floor(controls.velocity * 100) + '%');
     cockpit.updateText('hud-force', 'G: ' + force.toFixed(2) );
 
-    renderer.render();
+    renderer.render(scene, camera);
 
 };

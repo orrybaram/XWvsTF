@@ -8,6 +8,8 @@ THREE.SpaceshipControls = function ( object, domElement , config) {
 
   this.object = object;
 
+  console.log(object)
+
   this.domElement = ( domElement !== undefined ) ? domElement : document;
   if (domElement && domElement !== document) {
     this.domElement.setAttribute( 'tabindex', -1 );
