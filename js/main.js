@@ -44,7 +44,7 @@ function init() {
 	
 	camera = new THREE.PerspectiveCamera( 25, SCREEN_WIDTH / SCREEN_HEIGHT, 50, 100000 );
 
-	camera.position.set(15000, 5, -135);
+	camera.position.set(50000, 5, -135);
 
 	// TODO: learn this
 	camera.quaternion.x = 0.07;
@@ -88,8 +88,8 @@ function init() {
 	// Death Star
 	// =============================================
 
-		deathStar.scale.set(3,3,3);
-		deathStar.position.x = -50000;
+		deathStar.scale.set(13,13,13);
+		deathStar.position.x = -90000;
 		scene.add(deathStar);
 		setMaterial(deathStar, new THREE.MeshLambertMaterial({ color: 0xCCCCCC }));
 
