@@ -3964,19 +3964,19 @@
     </library_effects>
     <library_images>
         <image id="ID197">
-            <init_from>death-star2/_8_-_Default1.JPG</init_from>
+            <init_from>death-star/_8_-_Default1.JPG</init_from>
         </image>
         <image id="ID287">
-            <init_from>death-star2/_8_-_Default1_0.JPG</init_from>
+            <init_from>death-star/_8_-_Default1_0.JPG</init_from>
         </image>
         <image id="ID302">
-            <init_from>death-star2/_7_-_Default1.JPG</init_from>
+            <init_from>death-star/_7_-_Default1.JPG</init_from>
         </image>
         <image id="ID417">
-            <init_from>death-star2/_3_-_Default1.JPG</init_from>
+            <init_from>death-star/_3_-_Default1.JPG</init_from>
         </image>
         <image id="ID442">
-            <init_from>death-star2/_1_-_Default1.JPG</init_from>
+            <init_from>death-star/_1_-_Default1.JPG</init_from>
         </image>
     </library_images>
     <scene>
