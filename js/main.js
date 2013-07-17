@@ -88,69 +88,20 @@ function init() {
 	// Death Star
 	// =============================================
 
-		deathStar.scale.set(13,13,13);
-		deathStar.position.x = -90000;
-		scene.add(deathStar);
-		setMaterial(deathStar, new THREE.MeshLambertMaterial({ color: 0xCCCCCC }));
+	deathStar.scale.set(13,13,13);
+	deathStar.position.x = -90000;
+	scene.add(deathStar);
+	setMaterial(deathStar, new THREE.MeshLambertMaterial({ color: 0xCCCCCC }));
 
-		// Once the death star is loaded in, start animations
 		
-			
-	
-
 	// Stars
 	// =============================================
-
-	// WHY DOESNT THIS WORK???
-
-	var i, r = 3000, starsGeometry = [ new THREE.Geometry(), new THREE.Geometry() ];
-
-	for ( i = 0; i < 250; i ++ ) {
-
-		vector1 = new THREE.Vector3( Math.random() * 2 - 1, Math.random() * 2 - 1, Math.random() * 2 - 1 );
-		vector1.multiplyScalar( r );
-
-		starsGeometry[ 0 ].vertices.push( new THREE.Vector3( vector1 ) );
-
-	}
-
-	for ( i = 0; i < 1500; i ++ ) {
-
-		vector1 = new THREE.Vector3( Math.random() * 2 - 1, Math.random() * 2 - 1, Math.random() * 2 - 1 );
-		vector1.multiplyScalar( r );
-
-		starsGeometry[ 1 ].vertices.push( new THREE.Vector3( vector1 ) );
-
-	}
-
-	var stars;
-	var starsMaterials = [
-		new THREE.ParticleBasicMaterial( { color: 0x555555, size: 2, sizeAttenuation: false } ),
-		new THREE.ParticleBasicMaterial( { color: 0x555555, size: 1, sizeAttenuation: false } ),
-		new THREE.ParticleBasicMaterial( { color: 0x333333, size: 2, sizeAttenuation: false } ),
-		new THREE.ParticleBasicMaterial( { color: 0x3a3a3a, size: 1, sizeAttenuation: false } ),
-		new THREE.ParticleBasicMaterial( { color: 0x1a1a1a, size: 2, sizeAttenuation: false } ),
-		new THREE.ParticleBasicMaterial( { color: 0x1a1a1a, size: 1, sizeAttenuation: false } )
-	];
-
-	for ( i = 10; i < 30; i ++ ) {
-
-		stars = new THREE.ParticleSystem( starsGeometry[ i % 2 ], starsMaterials[ i % 6 ] );
-
-		stars.rotation.x = Math.random() * 6;
-		stars.rotation.y = Math.random() * 6;
-		stars.rotation.z = Math.random() * 6;
-
-		s = i * 10;
-		stars.scale.set( s, s, s );
-
-		stars.matrixAutoUpdate = false;
-		stars.updateMatrix();
-
-		scene.add( stars );
-
-	}
 	
+	// TODO
+
+	
+	// Cockpit
+	// =============================================	
 	cockpit = new Cockpit('img/XW_cockpit.png');
 	cockpitState = 'normal';
 
