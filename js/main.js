@@ -42,7 +42,7 @@ function init() {
 	// Camera
 	// =============================================
 	
-	camera = new THREE.PerspectiveCamera( 25, SCREEN_WIDTH / SCREEN_HEIGHT, 50, 10000 );
+	camera = new THREE.PerspectiveCamera( 25, SCREEN_WIDTH / SCREEN_HEIGHT, 50, 100000 );
 
 	camera.position.set(15000, 5, -135);
 
@@ -88,8 +88,8 @@ function init() {
 	// Death Star
 	// =============================================
 
-		deathStar.scale.set(1,1,1);
-		deathStar.position.x = 1000;
+		deathStar.scale.set(3,3,3);
+		deathStar.position.x = -50000;
 		scene.add(deathStar);
 		setMaterial(deathStar, new THREE.MeshLambertMaterial({ color: 0xCCCCCC }));
 
