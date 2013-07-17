@@ -1,10 +1,4 @@
 
-var radius = 6371;
-var tilt = 0.41;
-
-var cloudsScale = 1.005;
-var moonScale = 0.23;
-
 var MARGIN = 0;
 var SCREEN_HEIGHT = window.innerHeight - MARGIN * 2;
 var SCREEN_WIDTH  = window.innerWidth;
@@ -32,6 +26,7 @@ document.body.addEventListener('mousemove', function( evt ){
 });
 
 init();
+animate();
 
 function init() {
 
@@ -39,13 +34,12 @@ function init() {
 	document.body.appendChild( container );
 
 	scene = new THREE.Scene();
-	scene.fog = new THREE.FogExp2( 0x000000, 0.00000025 );
+	// scene.fog = new THREE.FogExp2( 0x000000, 0.00000025 );
 
 	// Camera
 	// =============================================
 	
-	camera = new THREE.PerspectiveCamera( 25, SCREEN_WIDTH / SCREEN_HEIGHT, 50, 1e7 );
-	camera.position.z = radius * 5;
+	camera = new THREE.PerspectiveCamera( 25, SCREEN_WIDTH / SCREEN_HEIGHT, 50, 1000 );
 
 	scene.add( camera );
 
@@ -60,83 +54,82 @@ function init() {
     controls.maxSpeed = 700;
     controls.inertia = 150;
 
-    // Lights
-	// =============================================
+ 	// // Lights
+	// // =============================================
 
-	dirLight = new THREE.DirectionalLight( 0xffffff );
-	dirLight.position.set( -1, 0, 1 ).normalize();
-	scene.add( dirLight );
+	// dirLight = new THREE.DirectionalLight( 0xffffff );
+	// dirLight.position.set( -1, 0, 1 ).normalize();
+	// scene.add( dirLight );
 
-	ambientLight = new THREE.AmbientLight( 0x000000 );
-	scene.add( ambientLight );
+	// ambientLight = new THREE.AmbientLight( 0x000000 );
+	// scene.add( ambientLight );
 
 	
 
 	// Death Star
 	// =============================================
 
-	var deathStar;
-	colladaLoader.load('models/death-star.dae', function (result) {
-		console.log(result)
-		deathStar = result.scene;
-		scene.add(deathStar);
-		setMaterial(deathStar, new THREE.MeshLambertMaterial({ color: 0xCCCCCC }));
+	// var deathStar;
+	// colladaLoader.load('models/death-star.dae', function (result) {
+	// 	deathStar = result.scene;
+	// 	scene.add(deathStar);
+	// 	setMaterial(deathStar, new THREE.MeshLambertMaterial({ color: 0xCCCCCC }));
 
-		// Once the death star is loaded in, start animations
-		animate();
+	// 	// Once the death star is loaded in, start animations
 		
-	});
+			
+	// });
 
 	// Stars
 	// =============================================
 
-	var i, r = radius, starsGeometry = [ new THREE.Geometry(), new THREE.Geometry() ];
+	// var i, r = radius, starsGeometry = [ new THREE.Geometry(), new THREE.Geometry() ];
 
-	for ( i = 0; i < 250; i ++ ) {
+	// for ( i = 0; i < 250; i ++ ) {
 
-		vector1 = new THREE.Vector3( Math.random() * 2 - 1, Math.random() * 2 - 1, Math.random() * 2 - 1 );
-		vector1.multiplyScalar( r );
+	// 	vector1 = new THREE.Vector3( Math.random() * 2 - 1, Math.random() * 2 - 1, Math.random() * 2 - 1 );
+	// 	vector1.multiplyScalar( r );
 
-		starsGeometry[ 0 ].vertices.push( new THREE.Vector3( vector1 ) );
+	// 	starsGeometry[ 0 ].vertices.push( new THREE.Vector3( vector1 ) );
 
-	}
+	// }
 
-	for ( i = 0; i < 1500; i ++ ) {
+	// for ( i = 0; i < 1500; i ++ ) {
 
-		vector1 = new THREE.Vector3( Math.random() * 2 - 1, Math.random() * 2 - 1, Math.random() * 2 - 1 );
-		vector1.multiplyScalar( r );
+	// 	vector1 = new THREE.Vector3( Math.random() * 2 - 1, Math.random() * 2 - 1, Math.random() * 2 - 1 );
+	// 	vector1.multiplyScalar( r );
 
-		starsGeometry[ 1 ].vertices.push( new THREE.Vector3( vector1 ) );
+	// 	starsGeometry[ 1 ].vertices.push( new THREE.Vector3( vector1 ) );
 
-	}
+	// }
 
-	var stars;
-	var starsMaterials = [
-		new THREE.ParticleBasicMaterial( { color: 0x555555, size: 2, sizeAttenuation: false } ),
-		new THREE.ParticleBasicMaterial( { color: 0x555555, size: 1, sizeAttenuation: false } ),
-		new THREE.ParticleBasicMaterial( { color: 0x333333, size: 2, sizeAttenuation: false } ),
-		new THREE.ParticleBasicMaterial( { color: 0x3a3a3a, size: 1, sizeAttenuation: false } ),
-		new THREE.ParticleBasicMaterial( { color: 0x1a1a1a, size: 2, sizeAttenuation: false } ),
-		new THREE.ParticleBasicMaterial( { color: 0x1a1a1a, size: 1, sizeAttenuation: false } )
-	];
+	// var stars;
+	// var starsMaterials = [
+	// 	new THREE.ParticleBasicMaterial( { color: 0x555555, size: 2, sizeAttenuation: false } ),
+	// 	new THREE.ParticleBasicMaterial( { color: 0x555555, size: 1, sizeAttenuation: false } ),
+	// 	new THREE.ParticleBasicMaterial( { color: 0x333333, size: 2, sizeAttenuation: false } ),
+	// 	new THREE.ParticleBasicMaterial( { color: 0x3a3a3a, size: 1, sizeAttenuation: false } ),
+	// 	new THREE.ParticleBasicMaterial( { color: 0x1a1a1a, size: 2, sizeAttenuation: false } ),
+	// 	new THREE.ParticleBasicMaterial( { color: 0x1a1a1a, size: 1, sizeAttenuation: false } )
+	// ];
 
-	for ( i = 10; i < 30; i ++ ) {
+	// for ( i = 10; i < 30; i ++ ) {
 
-		stars = new THREE.ParticleSystem( starsGeometry[ i % 2 ], starsMaterials[ i % 6 ] );
+	// 	stars = new THREE.ParticleSystem( starsGeometry[ i % 2 ], starsMaterials[ i % 6 ] );
 
-		stars.rotation.x = Math.random() * 6;
-		stars.rotation.y = Math.random() * 6;
-		stars.rotation.z = Math.random() * 6;
+	// 	stars.rotation.x = Math.random() * 6;
+	// 	stars.rotation.y = Math.random() * 6;
+	// 	stars.rotation.z = Math.random() * 6;
 
-		s = i * 10;
-		stars.scale.set( s, s, s );
+	// 	s = i * 10;
+	// 	stars.scale.set( s, s, s );
 
-		stars.matrixAutoUpdate = false;
-		stars.updateMatrix();
+	// 	stars.matrixAutoUpdate = false;
+	// 	stars.updateMatrix();
 
-		scene.add( stars );
+	// 	scene.add( stars );
 
-	}
+	// }
 
 	// Renderer
 	// =============================================
@@ -222,5 +215,7 @@ function render() {
     cockpit.updateText('hud-speed', 'SPD: ' + Math.floor(controls.movementSpeed * controls.maxSpeed));
     cockpit.updateText('hud-thrust', 'PWR: ' + Math.floor(controls.velocity * 100) + '%');
     cockpit.updateText('hud-force', 'G: ' + force.toFixed(2) );
+
+    renderer.render();
 
 };
